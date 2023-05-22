@@ -1,6 +1,3 @@
-import { Navbar, Nav, Container, NavDropdown, Badge } from 'react-bootstrap';
-import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
-import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '../slices/usersApiSlice';
@@ -25,44 +22,30 @@ const Header = () => {
   };
 
   return (
-    <header>
-      <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
-        <Container>
-          <LinkContainer to='/'>
-            <Navbar.Brand>MERN Auth</Navbar.Brand>
-          </LinkContainer>
-          <Navbar.Toggle aria-controls='basic-navbar-nav' />
-          <Navbar.Collapse id='basic-navbar-nav'>
-            <Nav className='ms-auto'>
-              {userInfo ? (
-                <>
-                  <NavDropdown title={userInfo.name} id='username'>
-                    <LinkContainer to='/profile'>
-                      <NavDropdown.Item>Profile</NavDropdown.Item>
-                    </LinkContainer>
-                    <NavDropdown.Item onClick={logoutHandler}>
-                      Logout
-                    </NavDropdown.Item>
-                  </NavDropdown>
-                </>
-              ) : (
-                <>
-                  <LinkContainer to='/login'>
-                    <Nav.Link>
-                      <FaSignInAlt /> Sign In
-                    </Nav.Link>
-                  </LinkContainer>
-                  <LinkContainer to='/register'>
-                    <Nav.Link>
-                      <FaSignOutAlt /> Sign Up
-                    </Nav.Link>
-                  </LinkContainer>
-                </>
-              )}
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+    <header className="navbar">
+      <div className="container">
+        <div className="navbar-brand">
+          <a href="/" className="navbar-item">MERN Auth</a>
+        </div>
+        <div className="navbar-menu">
+          {userInfo ? (
+            <>
+              <div className="navbar-dropdown">
+                <button className="navbar-item">{userInfo.name}</button>
+                <div className="navbar-dropdown-menu">
+                  <a href="/profile" className="navbar-item">Profile</a>
+                  <button onClick={logoutHandler} className="navbar-item">Logout</button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <a href="/login" className="navbar-item">Sign In</a>
+              <a href="/register" className="navbar-item">Sign Up</a>
+            </>
+          )}
+        </div>
+      </div>
     </header>
   );
 };

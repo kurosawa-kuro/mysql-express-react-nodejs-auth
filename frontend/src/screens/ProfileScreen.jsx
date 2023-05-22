@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import FormContainer from '../components/FormContainer';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import { useUpdateUserMutation } from '../slices/usersApiSlice';
@@ -45,54 +43,59 @@ const ProfileScreen = () => {
       }
     }
   };
+  
   return (
-    <FormContainer>
+    <div className="form-container">
       <h1>Update Profile</h1>
 
-      <Form onSubmit={submitHandler}>
-        <Form.Group className='my-2' controlId='name'>
-          <Form.Label>Name</Form.Label>
-          <Form.Control
+      <form onSubmit={submitHandler}>
+        <div className='my-2' id='name'>
+          <label>Name</label>
+          <input
             type='name'
             placeholder='Enter name'
             value={name}
             onChange={(e) => setName(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group className='my-2' controlId='email'>
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
+            className="form-control"
+          />
+        </div>
+        <div className='my-2' id='email'>
+          <label>Email Address</label>
+          <input
             type='email'
             placeholder='Enter email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group className='my-2' controlId='password'>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
+            className="form-control"
+          />
+        </div>
+        <div className='my-2' id='password'>
+          <label>Password</label>
+          <input
             type='password'
             placeholder='Enter password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+            className="form-control"
+          />
+        </div>
 
-        <Form.Group className='my-2' controlId='confirmPassword'>
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
+        <div className='my-2' id='confirmPassword'>
+          <label>Confirm Password</label>
+          <input
             type='password'
             placeholder='Confirm password'
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+            className="form-control"
+          />
+        </div>
 
-        <Button type='submit' variant='primary' className='mt-3'>
+        <button type='submit' className='submit-button mt-3'>
           Update
-        </Button>
-      </Form>
-    </FormContainer>
+        </button>
+      </form>
+    </div>
   );
 };
 

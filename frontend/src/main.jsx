@@ -8,7 +8,6 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import './index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import store from './store';
 import { Provider } from 'react-redux';
 import HomeScreen from './screens/HomeScreen';

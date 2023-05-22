@@ -26,9 +26,9 @@ const RegisterScreen = () => {
       return response.data;
     },
     {
-      onSuccess: (data) => {
+      onSuccess: (user) => {
         // If the registration is successful, navigate to the home page
-        console.log("data:", data);
+        console.log("user:", user);
         navigate('/');
       },
       onError: (error) => {
@@ -95,7 +95,7 @@ const RegisterScreen = () => {
           Register
         </button>
 
-        {/* {isLoading && <Loader />} */}
+        {registerUserMutation.isLoading && <Loader />}
       </form>
 
       <div className='py-3'>

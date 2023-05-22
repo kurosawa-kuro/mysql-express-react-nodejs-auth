@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRegisterMutation } from '../slices/usersApiSlice';
-import { setCredentials } from '../slices/authSlice';
+// frontend\src\screens\RegisterScreen.jsx
+
+import { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 
@@ -11,19 +12,30 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [register, { isLoading }] = useRegisterMutation();
+  const queryClient = useQueryClient();
 
-  const { userInfo } = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    if (userInfo) {
-      navigate('/');
+  const registerUserMutation = useMutation(
+    async ({ name, email, password }) => {
+      const response = await axios.post('/api/users', {
+        name,
+        email,
+        password,
+      });
+      return response.data;
+    },
+    {
+      onSuccess: (data) => {
+        // If the registration is successful, navigate to the home page
+        console.log("data:", data);
+        navigate('/');
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data?.message || error.message);
+      },
     }
-  }, [navigate, userInfo]);
+  );
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -31,13 +43,7 @@ const RegisterScreen = () => {
     if (password !== confirmPassword) {
       toast.error('Passwords do not match');
     } else {
-      try {
-        const res = await register({ name, email, password }).unwrap();
-        dispatch(setCredentials({ ...res }));
-        navigate('/');
-      } catch (err) {
-        toast.error(err?.data?.message || err.error);
-      }
+      registerUserMutation.mutate({ name, email, password });
     }
   };
 
@@ -89,7 +95,7 @@ const RegisterScreen = () => {
           Register
         </button>
 
-        {isLoading && <Loader />}
+        {/* {isLoading && <Loader />} */}
       </form>
 
       <div className='py-3'>

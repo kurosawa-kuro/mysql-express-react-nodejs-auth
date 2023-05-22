@@ -6,6 +6,8 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
+import { } from '../state/store.js'
+import { useStore } from '../state/store.js';
 
 const RegisterScreen = () => {
   const [name, setName] = useState('');
@@ -14,6 +16,7 @@ const RegisterScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
+  const { setUser } = useStore();
   const queryClient = useQueryClient();
 
   const registerUserMutation = useMutation(
@@ -29,6 +32,8 @@ const RegisterScreen = () => {
       onSuccess: (user) => {
         // If the registration is successful, navigate to the home page
         console.log("user:", user);
+        setUser(user);
+        // Todo - set the user info in the zustand store
         navigate('/');
       },
       onError: (error) => {

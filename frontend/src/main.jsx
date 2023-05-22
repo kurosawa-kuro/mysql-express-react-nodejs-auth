@@ -8,8 +8,6 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import './index.css';
-import store from './store';
-import { Provider } from 'react-redux';
 import {
   QueryClient,
   QueryClientProvider,
@@ -44,12 +42,10 @@ const router = createBrowserRouter(
 );
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <Provider store={store}>
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </React.StrictMode>
-  </Provider>
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  </React.StrictMode>
 );

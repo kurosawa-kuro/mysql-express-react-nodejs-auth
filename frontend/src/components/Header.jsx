@@ -1,20 +1,17 @@
-import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { useLogoutMutation } from '../slices/usersApiSlice';
-import { logout } from '../slices/authSlice';
+import { useStore } from '../state/store.js';
 
 const Header = () => {
-  const { userInfo } = useSelector((state) => state.auth);
-
-  const dispatch = useDispatch();
+  const { user, setUser } = useStore();
   const navigate = useNavigate();
 
-  const [logoutApiCall] = useLogoutMutation();
+  // const [logoutApiCall] = useLogoutMutation();
 
   const logoutHandler = async () => {
     try {
       await logoutApiCall().unwrap();
-      dispatch(logout());
+      setUser(null);  // Update the user state to null on logout
       navigate('/login');
     } catch (err) {
       console.error(err);
@@ -23,18 +20,17 @@ const Header = () => {
 
   return (
     <header className="navbar">
-
       <div className="navbar-container">
         <div className="navbar-brand">
           <Link className="navbar-item" to={`/`}>MERN Auth</Link>
         </div>
         <div className="navbar-menu">
-          {userInfo ? (
+          {user ? (
             <>
               <div className="navbar-dropdown">
-                <button className="navbar-item">{userInfo.name}</button>
+                <button className="navbar-item">{user.name}</button>
                 <div className="navbar-dropdown-menu">
-                  <a href="/profile" className="navbar-item">Profile</a>
+                  <Link to="/profile" className="navbar-item">Profile</Link>
                   <button onClick={logoutHandler} className="navbar-item">Logout</button>
                 </div>
               </div>
@@ -47,7 +43,6 @@ const Header = () => {
           )}
         </div>
       </div>
-
     </header>
   );
 };

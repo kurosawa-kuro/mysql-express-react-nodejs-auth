@@ -8,7 +8,7 @@ const App = () => {
     <>
       <Header />
       <ToastContainer />
-      <div className='app-container'>
+      <div className='container'>
         <Outlet />
       </div>
     </>

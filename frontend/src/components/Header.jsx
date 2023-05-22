@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useLogoutMutation } from '../slices/usersApiSlice';
 import { logout } from '../slices/authSlice';
 
@@ -23,9 +23,10 @@ const Header = () => {
 
   return (
     <header className="navbar">
-      <div className="container">
+
+      <div className="navbar-container">
         <div className="navbar-brand">
-          <a href="/" className="navbar-item">MERN Auth</a>
+          <Link className="navbar-item" to={`/`}>MERN Auth</Link>
         </div>
         <div className="navbar-menu">
           {userInfo ? (
@@ -40,12 +41,13 @@ const Header = () => {
             </>
           ) : (
             <>
-              <a href="/login" className="navbar-item">Sign In</a>
-              <a href="/register" className="navbar-item">Sign Up</a>
+              <Link className="navbar-item" to={`/login`}>Sign In</Link>
+              <Link className="navbar-item" to={`/register`}>Sign Up</Link>
             </>
           )}
         </div>
       </div>
+
     </header>
   );
 };

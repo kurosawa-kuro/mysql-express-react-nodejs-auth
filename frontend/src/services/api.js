@@ -5,7 +5,7 @@ import { getApiClient } from './apiClient.js';
 const apiClient = getApiClient();
 
 export const registerUserApi = async ({ name, email, password }) => {
-    const response = await apiClient.post('/api/users', {
+    const response = await apiClient.post('/api/users/register', {
         name,
         email,
         password,
@@ -14,7 +14,7 @@ export const registerUserApi = async ({ name, email, password }) => {
 }
 
 export const loginUserApi = async ({ email, password }) => {
-    const response = await apiClient.post('/api/users/auth', { email, password });
+    const response = await apiClient.post('/api/users/login', { email, password });
     return response.data;
 };
 

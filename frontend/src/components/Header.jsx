@@ -1,21 +1,30 @@
 import { useNavigate, Link } from 'react-router-dom';
-import { useLogoutMutation } from '../slices/usersApiSlice';
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 import { useStore } from '../state/store.js';
 
 const Header = () => {
   const { user, setUser } = useStore();
   const navigate = useNavigate();
 
-  // const [logoutApiCall] = useLogoutMutation();
-
-  const logoutHandler = async () => {
-    try {
-      await logoutApiCall().unwrap();
-      setUser(null);  // Update the user state to null on logout
-      navigate('/login');
-    } catch (err) {
-      console.error(err);
+  const logoutMutation = useMutation(
+    async () => {
+      const response = await axios.post('/api/users/logout');
+      return response.data;
+    },
+    {
+      onSuccess: () => {
+        setUser(null);
+        navigate('/login');
+      },
+      onError: (err) => {
+        console.error(err);
+      },
     }
+  );
+
+  const logoutHandler = () => {
+    logoutMutation.mutate();
   };
 
   return (

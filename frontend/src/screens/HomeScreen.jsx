@@ -13,7 +13,7 @@ const HomeScreen = () => {
       toast.success(flashMessage);
       setFlashMessage(null); // Reset the toast message
     }
-  }, []);
+  }, [flashMessage, setFlashMessage]);
 
   return <Hero />;
 };

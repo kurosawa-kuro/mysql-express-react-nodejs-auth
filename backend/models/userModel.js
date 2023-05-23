@@ -17,7 +17,7 @@ export const getUserByEmail = async (email) => {
     return user ? omitPassword(user) : null;
 };
 
-export const authUser = async (email, password) => {
+export const authenticateUser = async (email, password) => {
     const user = await db.user.findUnique({ where: { email } });
 
     if (!user) {

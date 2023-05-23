@@ -3,7 +3,7 @@ import generateToken from '../utils/generateToken.js';
 import {
   createUser,
   getUserByEmail,
-  authUser,
+  authenticateUser,
   updateUserProfileData,
   getUserById
 } from '../models/userModel.js';
@@ -14,7 +14,7 @@ import {
 export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await authUser(email, password);
+  const user = await authenticateUser(email, password);
 
   if (user) {
     generateToken(res, user.id);

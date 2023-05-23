@@ -1,4 +1,4 @@
-// frontend\src\hooks\auth\useLoginUser.js
+// frontend\src\hooks\auth\useLoginUserHook.js
 
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { useUserStore, useFlashMessageStore } from '../../state/store.js';
 import { loginUserApi } from '../../services/api.js';
 
-export const useLoginUser = () => {
+export const useLoginUserHook = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 

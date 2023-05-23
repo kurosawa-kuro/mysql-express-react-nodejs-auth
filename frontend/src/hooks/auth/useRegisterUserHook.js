@@ -1,4 +1,4 @@
-// frontend\src\hooks\auth\useRegisterUser.js
+// frontend\src\hooks\auth\useRegisterUserHook.js
 
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUserStore, useFlashMessageStore } from '../../state/store.js';
 import { registerUserApi } from '../../services/api.js';
 
-export const useRegisterUser = () => {
+export const useRegisterUserHook = () => {
     const navigate = useNavigate();
     // Local State
     const [name, setName] = useState('');

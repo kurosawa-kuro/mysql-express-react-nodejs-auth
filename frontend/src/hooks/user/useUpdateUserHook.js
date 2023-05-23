@@ -1,4 +1,4 @@
-// frontend\src\hooks\user\useUpdateUser.js
+// frontend\src\hooks\user\useUpdateUserHook.js
 
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { useUserStore } from '../../state/store.js';
 import { fetchUserProfileApi, updateUserProfileApi } from '../../services/api.js';
 
-const useUpdateUser = () => {
+const useUpdateUserHook = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -59,4 +59,4 @@ const useUpdateUser = () => {
     };
 };
 
-export default useUpdateUser;
+export default useUpdateUserHook;

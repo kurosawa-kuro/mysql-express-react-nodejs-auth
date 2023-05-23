@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Loader } from '../../components/Loader';
 
 // Internal Modules
-import { useLoginUser } from '../../hooks/auth/useLoginUser';
+import { useLoginUserHook } from '../../hooks/auth/useLoginUserHook';
 
 const LoginScreen = () => {
   const {
@@ -15,7 +15,7 @@ const LoginScreen = () => {
     setEmail,
     password,
     setPassword
-  } = useLoginUser();
+  } = useLoginUserHook();
 
   // Component JSX
   return (

@@ -1,7 +1,7 @@
 // frontend\src\screens\ProfileScreen.jsx
 
 import { Loader } from '../../components/Loader';
-import useUpdateUser from '../../hooks/user/useUpdateUser';
+import useUpdateUserHook from '../../hooks/user/useUpdateUserHook';
 
 const ProfileScreen = () => {
   const {
@@ -11,7 +11,7 @@ const ProfileScreen = () => {
     confirmPassword, setConfirmPassword,
     isLoading,
     submitHandler,
-  } = useUpdateUser();
+  } = useUpdateUserHook();
 
   if (isLoading) return <Loader />;
 

@@ -4,7 +4,7 @@
 import { Link } from 'react-router-dom';
 
 // Internal Modules
-import { useRegisterUser } from '../../hooks/auth/useRegisterUser';
+import { useRegisterUserHook } from '../../hooks/auth/useRegisterUserHook';
 import { Loader } from '../../components/Loader';
 
 const RegisterScreen = () => {
@@ -20,7 +20,7 @@ const RegisterScreen = () => {
     setPassword,
     confirmPassword,
     setConfirmPassword
-  } = useRegisterUser();
+  } = useRegisterUserHook();
 
   // Component JSX
   return (

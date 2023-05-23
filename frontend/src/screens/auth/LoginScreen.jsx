@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Loader } from '../../components/Loader';
 import { useUserStore, useFlashMessageStore } from '../../state/store.js';
-import { loginUser } from '../../services/api.js';
+import { loginUserApi } from '../../services/api.js';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -17,9 +17,9 @@ const LoginScreen = () => {
 
   const navigate = useNavigate();
 
-  const loginUserMutation = useMutation(
+  const loginUserApiMutation = useMutation(
     async ({ email, password }) => {
-      const user = await loginUser({ email, password });
+      const user = await loginUserApi({ email, password });
       return user;
     },
     {
@@ -36,7 +36,7 @@ const LoginScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    loginUserMutation.mutate({ email, password });
+    loginUserApiMutation.mutate({ email, password });
   };
 
   return (
@@ -65,7 +65,7 @@ const LoginScreen = () => {
         </div>
 
         <button
-          disabled={loginUserMutation.isLoading}
+          disabled={loginUserApiMutation.isLoading}
           type='submit'
           className='register-button mt-3'
         >
@@ -73,7 +73,7 @@ const LoginScreen = () => {
         </button>
       </form>
 
-      {loginUserMutation.isLoading && <Loader />}
+      {loginUserApiMutation.isLoading && <Loader />}
 
       <div className='py-3'>
         New Customer? <Link to='/register'>Register</Link>

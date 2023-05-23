@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 
 // Internal Modules
 import { useUserStore, useFlashMessageStore } from '../../state/store.js';
-import { registerUser } from '../../services/api.js';
+import { registerUserApi } from '../../services/api.js';
 import { Loader } from '../../components/Loader';
 
 const RegisterScreen = () => {
@@ -28,7 +28,7 @@ const RegisterScreen = () => {
   // API Mutation
   const registerUserMutation = useMutation(
     async ({ name, email, password }) => {
-      const user = await registerUser({ name, email, password });
+      const user = await registerUserApi({ name, email, password });
       return user;
     },
     {

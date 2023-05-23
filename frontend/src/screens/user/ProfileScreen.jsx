@@ -5,7 +5,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { Loader } from '../../components/Loader';
 import { useUserStore } from '../../state/store.js';
-import { fetchUserProfile, updateUserProfile } from '../../services/api.js';
+import { fetchUserProfileApi, updateUserProfileApi } from '../../services/api.js';
 
 
 
@@ -16,7 +16,7 @@ const ProfileScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const { user, setUser } = useUserStore();
-  const { data: userProfile, isLoading } = useQuery(['userProfile'], fetchUserProfile);
+  const { data: userProfile, isLoading } = useQuery(['userProfile'], fetchUserProfileApi);
 
   useEffect(() => {
     if (userProfile) {
@@ -27,7 +27,7 @@ const ProfileScreen = () => {
 
   const updateUserMutation = useMutation(
     async ({ name, email, password }) => {
-      const updatedUser = await updateUserProfile({ name, email, password });  // <-- Change this line
+      const updatedUser = await updateUserProfileApi({ name, email, password });  // <-- Change this line
       return updatedUser;
     },
     {

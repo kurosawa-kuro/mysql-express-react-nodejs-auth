@@ -1,7 +1,7 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { useUserStore } from '../state/store.js';
-import { logoutUser } from '../services/api.js';
+import { logoutUserApi } from '../services/api.js';
 
 const Header = () => {
   const { user, setUser } = useUserStore();
@@ -9,7 +9,7 @@ const Header = () => {
 
   const logoutMutation = useMutation(
     async () => {
-      await logoutUser();
+      await logoutUserApi();
     },
     {
       onSuccess: () => {

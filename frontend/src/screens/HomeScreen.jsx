@@ -1,6 +1,20 @@
+import { useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { useFlashMessageStore } from '../state/store.js';
 import Hero from '../components/Hero';
 
 const HomeScreen = () => {
+
+  const { flashMessage, setFlashMessage } = useFlashMessageStore();
+
+  useEffect(() => {
+    console.log('HomeScreen');
+    if (flashMessage) {
+      toast.success(flashMessage);
+      setFlashMessage(null); // Reset the toast message
+    }
+  }, []);
+
   return <Hero />;
 };
 export default HomeScreen;

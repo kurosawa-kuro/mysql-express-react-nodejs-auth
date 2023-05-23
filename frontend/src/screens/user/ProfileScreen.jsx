@@ -1,33 +1,39 @@
-// frontend\src\screens\RegisterScreen.jsx
+// frontend\src\screens\ProfileScreen.jsx
 
-import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { Loader } from '../components/Loader';
-import { useStore } from '../state/store.js';
-import { registerUser } from '../services/api.js';
+import { Loader } from '../../components/Loader';
+import { useUserStore } from '../../state/store.js';
+import { fetchUserProfile, updateUserProfile } from '../../services/api.js';
 
-const RegisterScreen = () => {
+
+
+const ProfileScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const navigate = useNavigate();
 
-  const { setUser } = useStore();
+  const { user, setUser } = useUserStore();
+  const { data: userProfile, isLoading } = useQuery(['userProfile'], fetchUserProfile);
 
-  const registerUserMutation = useMutation(
+  useEffect(() => {
+    if (userProfile) {
+      setName(userProfile.name);
+      setEmail(userProfile.email);
+    }
+  }, [userProfile]);
+
+  const updateUserMutation = useMutation(
     async ({ name, email, password }) => {
-      const user = await registerUser({ name, email, password });  // <-- Change this line
-      return user;
+      const updatedUser = await updateUserProfile({ name, email, password });  // <-- Change this line
+      return updatedUser;
     },
     {
-      onSuccess: (user) => {
-        // If the registration is successful, navigate to the home page
-        setUser(user);
-        // Todo - set the user info in the zustand store
-        navigate('/');
+      onSuccess: (updatedUser) => {
+        setUser(updatedUser);
+        toast.success('Profile updated successfully');
       },
       onError: (error) => {
         toast.error(error?.response?.data?.message || error.message);
@@ -35,19 +41,21 @@ const RegisterScreen = () => {
     }
   );
 
-  const submitHandler = async (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
-
     if (password !== confirmPassword) {
       toast.error('Passwords do not match');
     } else {
-      registerUserMutation.mutate({ name, email, password });
+      updateUserMutation.mutate({ id: user.id, name, email, password });
     }
   };
 
+  if (isLoading) return <Loader />;
+
   return (
     <div className="form-container">
-      <h1>Register</h1>
+      <h1>Update Profile</h1>
+
       <form onSubmit={submitHandler}>
         <div className='my-2' id='name'>
           <label>Name</label>
@@ -56,9 +64,9 @@ const RegisterScreen = () => {
             placeholder='Enter name'
             value={name}
             onChange={(e) => setName(e.target.value)}
+            className="form-control"
           />
         </div>
-
         <div className='my-2' id='email'>
           <label>Email Address</label>
           <input
@@ -66,9 +74,9 @@ const RegisterScreen = () => {
             placeholder='Enter email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="form-control"
           />
         </div>
-
         <div className='my-2' id='password'>
           <label>Password</label>
           <input
@@ -76,6 +84,7 @@ const RegisterScreen = () => {
             placeholder='Enter password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="form-control"
           />
         </div>
 
@@ -86,23 +95,16 @@ const RegisterScreen = () => {
             placeholder='Confirm password'
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            className="form-control"
           />
         </div>
 
-        <button type='submit' className='register-button mt-3'>
-          Register
+        <button type='submit' className='submit-button mt-3'>
+          Update
         </button>
-
-        {registerUserMutation.isLoading && <Loader />}
       </form>
-
-      <div className='py-3'>
-        <span>
-          Already have an account? <Link to={`/login`}>Login</Link>
-        </span>
-      </div>
     </div>
   );
 };
 
-export default RegisterScreen;
+export default ProfileScreen;

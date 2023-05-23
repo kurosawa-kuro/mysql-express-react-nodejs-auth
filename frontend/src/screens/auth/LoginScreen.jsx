@@ -4,15 +4,17 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { Loader } from '../components/Loader';
-import { useStore } from '../state/store.js';
-import { loginUser } from '../services/api.js';
+import { Loader } from '../../components/Loader';
+import { useUserStore, useFlashMessageStore } from '../../state/store.js';
+import { loginUser } from '../../services/api.js';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { setUser } = useStore();
+  const { setUser } = useUserStore();
+
+  const { setFlashMessage } = useFlashMessageStore();
   const navigate = useNavigate();
 
   const loginUserMutation = useMutation(
@@ -23,6 +25,7 @@ const LoginScreen = () => {
     {
       onSuccess: (user) => {
         setUser(user);
+        setFlashMessage("User login successful!");
         navigate('/');
       },
       onError: (error) => {

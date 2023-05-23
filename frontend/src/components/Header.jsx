@@ -1,10 +1,10 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
-import { useStore } from '../state/store.js';
+import { useUserStore } from '../state/store.js';
 import { logoutUser } from '../services/api.js';
 
 const Header = () => {
-  const { user, setUser } = useStore();
+  const { user, setUser } = useUserStore();
   const navigate = useNavigate();
 
   const logoutMutation = useMutation(

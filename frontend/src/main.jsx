@@ -14,9 +14,9 @@ import {
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import HomeScreen from './screens/HomeScreen';
-import LoginScreen from './screens/LoginScreen.jsx';
-import RegisterScreen from './screens/RegisterScreen.jsx';
-import ProfileScreen from './screens/ProfileScreen.jsx';
+import LoginScreen from './screens/auth/LoginScreen.jsx';
+import RegisterScreen from './screens/auth/RegisterScreen.jsx';
+import ProfileScreen from './screens/user/ProfileScreen.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 
 const queryClient = new QueryClient({

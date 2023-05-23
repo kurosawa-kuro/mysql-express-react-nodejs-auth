@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import { useStore } from '../state/store.js';
+import { loginUser } from '../services/api.js';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -17,8 +17,8 @@ const LoginScreen = () => {
 
   const loginUserMutation = useMutation(
     async ({ email, password }) => {
-      const response = await axios.post('/api/users/auth', { email, password });
-      return response.data;
+      const user = await loginUser({ email, password });
+      return user;
     },
     {
       onSuccess: (user) => {

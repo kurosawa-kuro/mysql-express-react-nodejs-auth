@@ -1,12 +1,12 @@
 // frontend\src\screens\RegisterScreen.jsx
 
 import { useState } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import { useStore } from '../state/store.js';
+import { registerUser } from '../services/api.js';
 
 const RegisterScreen = () => {
   const [name, setName] = useState('');
@@ -16,16 +16,11 @@ const RegisterScreen = () => {
   const navigate = useNavigate();
 
   const { setUser } = useStore();
-  const queryClient = useQueryClient();
 
   const registerUserMutation = useMutation(
     async ({ name, email, password }) => {
-      const response = await axios.post('/api/users', {
-        name,
-        email,
-        password,
-      });
-      return response.data;
+      const user = await registerUser({ name, email, password });  // <-- Change this line
+      return user;
     },
     {
       onSuccess: (user) => {

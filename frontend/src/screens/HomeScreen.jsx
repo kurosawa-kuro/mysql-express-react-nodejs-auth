@@ -4,14 +4,12 @@ import { useFlashMessageStore } from '../state/store.js';
 import Hero from '../components/Hero';
 
 const HomeScreen = () => {
-
   const { flashMessage, setFlashMessage } = useFlashMessageStore();
 
   useEffect(() => {
-    console.log('HomeScreen');
     if (flashMessage) {
       toast.success(flashMessage);
-      setFlashMessage(null); // Reset the toast message
+      setFlashMessage(null);
     }
   }, [flashMessage, setFlashMessage]);
 

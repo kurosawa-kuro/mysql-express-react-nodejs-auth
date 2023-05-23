@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Loader } from '../../components/Loader';
-import { useUserStore } from '../../state/store.js';
+import { useUserStore, useFlashMessageStore } from '../../state/store.js';
 import { registerUser } from '../../services/api.js';
 
 const RegisterScreen = () => {
@@ -16,6 +16,7 @@ const RegisterScreen = () => {
   const navigate = useNavigate();
 
   const { setUser } = useUserStore();
+  const { setFlashMessage } = useFlashMessageStore();
 
   const registerUserMutation = useMutation(
     async ({ name, email, password }) => {
@@ -24,9 +25,8 @@ const RegisterScreen = () => {
     },
     {
       onSuccess: (user) => {
-        // If the registration is successful, navigate to the home page
         setUser(user);
-        // Todo - set the user info in the zustand store
+        setFlashMessage("User login successful!");
         navigate('/');
       },
       onError: (error) => {

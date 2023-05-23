@@ -13,8 +13,8 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
 
   const { setUser } = useUserStore();
-
   const { setFlashMessage } = useFlashMessageStore();
+
   const navigate = useNavigate();
 
   const loginUserMutation = useMutation(

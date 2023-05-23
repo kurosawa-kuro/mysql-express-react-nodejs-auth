@@ -1,22 +1,29 @@
 // frontend\src\screens\LoginScreen.jsx
 
+// External Packages
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { Loader } from '../../components/Loader';
+
+// Internal Modules
 import { useUserStore, useFlashMessageStore } from '../../state/store.js';
 import { loginUserApi } from '../../services/api.js';
+import { Loader } from '../../components/Loader';
 
 const LoginScreen = () => {
+  // Navigation
+  const navigate = useNavigate();
+
+  // Component State
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // Global State
   const { setUser } = useUserStore();
   const { setFlashMessage } = useFlashMessageStore();
 
-  const navigate = useNavigate();
-
+  // API Mutation
   const loginUserApiMutation = useMutation(
     async ({ email, password }) => {
       const user = await loginUserApi({ email, password });
@@ -34,11 +41,13 @@ const LoginScreen = () => {
     }
   );
 
+  // Form Handler
   const submitHandler = (e) => {
     e.preventDefault();
     loginUserApiMutation.mutate({ email, password });
   };
 
+  // Component JSX
   return (
     <div className="form-container">
       <h1>Sign In</h1>

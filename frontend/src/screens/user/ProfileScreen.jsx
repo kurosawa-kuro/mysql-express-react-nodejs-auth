@@ -1,23 +1,29 @@
 // frontend\src\screens\ProfileScreen.jsx
 
+// External Packages
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { Loader } from '../../components/Loader';
+
+// Internal Modules
 import { useUserStore } from '../../state/store.js';
 import { fetchUserProfileApi, updateUserProfileApi } from '../../services/api.js';
-
-
+import { Loader } from '../../components/Loader';
 
 const ProfileScreen = () => {
+  // Component State
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  // Global State
   const { user, setUser } = useUserStore();
+
+  // API Query
   const { data: userProfile, isLoading } = useQuery(['userProfile'], fetchUserProfileApi);
 
+  // Sync local state with fetched user data
   useEffect(() => {
     if (userProfile) {
       setName(userProfile.name);
@@ -25,9 +31,10 @@ const ProfileScreen = () => {
     }
   }, [userProfile]);
 
+  // API Mutation
   const updateUserMutation = useMutation(
     async ({ name, email, password }) => {
-      const updatedUser = await updateUserProfileApi({ name, email, password });  // <-- Change this line
+      const updatedUser = await updateUserProfileApi({ name, email, password });
       return updatedUser;
     },
     {
@@ -41,6 +48,7 @@ const ProfileScreen = () => {
     }
   );
 
+  // Form Handler
   const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -50,8 +58,10 @@ const ProfileScreen = () => {
     }
   };
 
+  // Loading State
   if (isLoading) return <Loader />;
 
+  // Component JSX
   return (
     <div className="form-container">
       <h1>Update Profile</h1>

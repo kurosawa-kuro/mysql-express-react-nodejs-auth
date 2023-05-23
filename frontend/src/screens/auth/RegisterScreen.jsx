@@ -1,58 +1,26 @@
 // frontend\src\screens\RegisterScreen.jsx
 
 // External Packages
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 // Internal Modules
-import { useUserStore, useFlashMessageStore } from '../../state/store.js';
-import { registerUserApi } from '../../services/api.js';
+import { useRegisterUser } from '../../hooks/auth/useRegisterUser';
 import { Loader } from '../../components/Loader';
 
 const RegisterScreen = () => {
-  // Navigation
-  const navigate = useNavigate();
-
-  // Component State
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-
-  // Global State
-  const { setUser } = useUserStore();
-  const { setFlashMessage } = useFlashMessageStore();
-
-  // API Mutation
-  const registerUserMutation = useMutation(
-    async ({ name, email, password }) => {
-      const user = await registerUserApi({ name, email, password });
-      return user;
-    },
-    {
-      onSuccess: (user) => {
-        setUser(user);
-        setFlashMessage("User registration successful!");
-        navigate('/');
-      },
-      onError: (error) => {
-        toast.error(error?.response?.data?.message || error.message);
-      },
-    }
-  );
-
-  // Form Handler
-  const submitHandler = async (e) => {
-    e.preventDefault();
-
-    if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
-    } else {
-      registerUserMutation.mutate({ name, email, password });
-    }
-  };
+  // Custom Hook
+  const {
+    mutation: registerUserMutation,
+    submitHandler,
+    name,
+    setName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword
+  } = useRegisterUser();
 
   // Component JSX
   return (

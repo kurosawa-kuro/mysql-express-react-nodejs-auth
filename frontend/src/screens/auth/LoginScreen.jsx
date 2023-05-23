@@ -1,51 +1,21 @@
 // frontend\src\screens\LoginScreen.jsx
 
 // External Packages
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
-
-// Internal Modules
-import { useUserStore, useFlashMessageStore } from '../../state/store.js';
-import { loginUserApi } from '../../services/api.js';
+import { Link } from 'react-router-dom';
 import { Loader } from '../../components/Loader';
 
+// Internal Modules
+import { useLoginUser } from '../../hooks/auth/useLoginUser';
+
 const LoginScreen = () => {
-  // Navigation
-  const navigate = useNavigate();
-
-  // Component State
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  // Global State
-  const { setUser } = useUserStore();
-  const { setFlashMessage } = useFlashMessageStore();
-
-  // API Mutation
-  const loginUserApiMutation = useMutation(
-    async ({ email, password }) => {
-      const user = await loginUserApi({ email, password });
-      return user;
-    },
-    {
-      onSuccess: (user) => {
-        setUser(user);
-        setFlashMessage("User login successful!");
-        navigate('/');
-      },
-      onError: (error) => {
-        toast.error(error?.response?.data?.message || error.message);
-      },
-    }
-  );
-
-  // Form Handler
-  const submitHandler = (e) => {
-    e.preventDefault();
-    loginUserApiMutation.mutate({ email, password });
-  };
+  const {
+    mutation: loginUserApiMutation,
+    submitHandler,
+    email,
+    setEmail,
+    password,
+    setPassword
+  } = useLoginUser();
 
   // Component JSX
   return (

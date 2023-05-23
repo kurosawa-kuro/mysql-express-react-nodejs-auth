@@ -30,7 +30,6 @@ const RegisterScreen = () => {
     {
       onSuccess: (user) => {
         // If the registration is successful, navigate to the home page
-        console.log("user:", user);
         setUser(user);
         // Todo - set the user info in the zustand store
         navigate('/');

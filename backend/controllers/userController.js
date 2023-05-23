@@ -7,6 +7,7 @@ import {
   updateUserPassword,
   getUserById
 } from '../models/userModel.js';
+import { db } from "../database/prisma/prismaClient.js";
 
 // @desc    Auth user & get token
 // @route   POST /api/users/auth
@@ -15,7 +16,6 @@ export const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await loginUser(email, password);
-  console.log("backend controllers userController.js user", user);
 
   if (user) {
     generateToken(res, user.id);
@@ -93,15 +93,24 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/profile
 // @access  Private
 export const updateUserProfile = asyncHandler(async (req, res) => {
+  // updateUserProfile
+  console.log("--- updateUserProfile ---");
+  console.log("req.body", req.body);
+  console.log("req.user", req.user);
   const user = await getUserById(req.user.id);
+  console.log("user", user);
 
   if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
 
-    if (req.body.password) {
-      user = await updateUserPassword(user.id, req.body.password);
-    }
+    // user update
+    console.log("user update");
+    const updatedUser = await db.user.update({
+      where: { id: user.id },
+      data: { name: user.name, email: user.email }
+    });
+    console.log("updatedUser", updatedUser);
 
     res.json({
       id: user.id,

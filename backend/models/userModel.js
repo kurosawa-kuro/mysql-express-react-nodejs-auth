@@ -23,7 +23,6 @@ export const loginUser = async (email, password) => {
     if (!user) {
         throw new Error("User does not exist");
     }
-    console.log("password:", password, " user.password:", user.password)
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
@@ -34,11 +33,11 @@ export const loginUser = async (email, password) => {
 }
 
 export const getUserById = async (id) => {
-    const user = await db.user.findUnique({ where: { id } });
-    return user ? omitPassword(user) : null;
+    return await db.user.findUnique({ where: { id } });
 }
 
 export const updateUserPassword = async (id, newPassword) => {
+    console.log("updateUserPassword", id, newPassword);
     const hashedPassword = await hashPassword(newPassword);
     const user = await db.user.update({ where: { id }, data: { password: hashedPassword } });
     return user ? omitPassword(user) : null;

@@ -1,49 +1,68 @@
+// frontend\src\screens\ProfileScreen.jsx
+
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
-import { useUpdateUserMutation } from '../slices/usersApiSlice';
-import { setCredentials } from '../slices/authSlice';
+import { useStore } from '../state/store.js';
+import { getApiClient } from '../services/apiClient.js'; // 追加
+
+const apiClient = getApiClient(); // 追加
+
+const fetchProfile = async () => {
+  const { data } = await apiClient.get('/api/users/profile'); // 修正
+  return data;
+};
 
 const ProfileScreen = () => {
-  const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const dispatch = useDispatch();
+  const { user, setUser } = useStore();
 
-  const { userInfo } = useSelector((state) => state.auth);
-
-  const [updateProfile, { isLoading }] = useUpdateUserMutation();
+  const { data: userProfile, isLoading } =
+    useQuery(['userProfile'], fetchProfile);
 
   useEffect(() => {
-    setName(userInfo.name);
-    setEmail(userInfo.email);
-  }, [userInfo.email, userInfo.name]);
+    if (userProfile) {
+      setName(userProfile.name);
+      setEmail(userProfile.email);
+    }
+  }, [userProfile]);
 
-  const submitHandler = async (e) => {
+  const updateUserMutation = useMutation(
+    async ({ id, name, email, password }) => {
+      const response = await apiClient.put('/api/users/profile', {
+        name,
+        email,
+        password,
+      });
+      return response.data;
+    },
+    {
+      onSuccess: (updatedUser) => {
+        setUser(updatedUser);
+        toast.success('Profile updated successfully');
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data?.message || error.message);
+      },
+    }
+  );
+
+  const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       toast.error('Passwords do not match');
     } else {
-      try {
-        const res = await updateProfile({
-          _id: userInfo._id,
-          name,
-          email,
-          password,
-        }).unwrap();
-        console.log(res);
-        dispatch(setCredentials(res));
-        toast.success('Profile updated successfully');
-      } catch (err) {
-        toast.error(err?.data?.message || err.error);
-      }
+      updateUserMutation.mutate({ id: user.id, name, email, password });
     }
   };
-  
+
+  if (isLoading) return <Loader />;
+
   return (
     <div className="form-container">
       <h1>Update Profile</h1>

@@ -2,6 +2,7 @@
 
 import path from 'path';
 import express from 'express';
+import cors from "cors";
 import dotenv from 'dotenv';
 dotenv.config();
 import cookieParser from 'cookie-parser';
@@ -9,6 +10,12 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import userRoutes from './routes/userRoutes.js';
 
 export const app = express();
+
+const corsOptions = {
+  credentials: true,
+  origin: "http://localhost:3000",
+};
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -10,8 +10,7 @@ const Header = () => {
 
   const logoutMutation = useMutation(
     async () => {
-      const response = await logoutUser(); // <-- Change this line
-      return response;
+      await logoutUser();
     },
     {
       onSuccess: () => {

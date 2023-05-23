@@ -15,8 +15,8 @@ afterAll(async () => {
     await prismaClient.$disconnect();
 });
 
-describe('POST /api/users/auth', () => {
-    it('should authenticate user', async () => {
+describe('POST /api/users/login', () => {
+    it('should login user', async () => {
 
         const sampleUser = {
             email: 'sample@gmail.com',
@@ -31,7 +31,7 @@ describe('POST /api/users/auth', () => {
         });
 
         const response = await request(app)
-            .post('/api/users/auth')
+            .post('/api/users/login')
             .send({ email: sampleUser.email, password: sampleUser.password });
 
         console.log("Response Body", response.body);
@@ -55,7 +55,7 @@ describe('POST /api/users', () => {
         }
 
         const response = await request(app)
-            .post('/api/users')
+            .post('/api/users/register')
             .send(newUser);
 
         console.log("Response Body", response.body);

@@ -3,7 +3,7 @@ import generateToken from '../utils/generateToken.js';
 import {
   createUser,
   getUserByEmail,
-  loginUser,
+  authUser,
   updateUserProfileData,
   getUserById
 } from '../models/userModel.js';
@@ -11,10 +11,10 @@ import {
 // @desc    Auth user & get token
 // @route   POST /api/users/auth
 // @access  Public
-export const authUser = asyncHandler(async (req, res) => {
+export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await loginUser(email, password);
+  const user = await authUser(email, password);
 
   if (user) {
     generateToken(res, user.id);

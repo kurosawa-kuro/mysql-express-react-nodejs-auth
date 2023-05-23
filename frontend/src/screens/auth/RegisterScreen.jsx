@@ -1,32 +1,40 @@
 // frontend\src\screens\RegisterScreen.jsx
 
+// External Packages
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { Loader } from '../../components/Loader';
+
+// Internal Modules
 import { useUserStore, useFlashMessageStore } from '../../state/store.js';
 import { registerUser } from '../../services/api.js';
+import { Loader } from '../../components/Loader';
 
 const RegisterScreen = () => {
+  // Navigation
+  const navigate = useNavigate();
+
+  // Component State
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const navigate = useNavigate();
 
+  // Global State
   const { setUser } = useUserStore();
   const { setFlashMessage } = useFlashMessageStore();
 
+  // API Mutation
   const registerUserMutation = useMutation(
     async ({ name, email, password }) => {
-      const user = await registerUser({ name, email, password });  // <-- Change this line
+      const user = await registerUser({ name, email, password });
       return user;
     },
     {
       onSuccess: (user) => {
         setUser(user);
-        setFlashMessage("User login successful!");
+        setFlashMessage("User registration successful!");
         navigate('/');
       },
       onError: (error) => {
@@ -35,6 +43,7 @@ const RegisterScreen = () => {
     }
   );
 
+  // Form Handler
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -45,6 +54,7 @@ const RegisterScreen = () => {
     }
   };
 
+  // Component JSX
   return (
     <div className="form-container">
       <h1>Register</h1>

@@ -31,3 +31,8 @@ export const updateUserProfile = async ({ name, email, password }) => {
     });
     return response.data;
 };
+
+export const logoutUser = async () => {
+    const response = await apiClient.post('/api/users/logout');
+    return response.data;
+};

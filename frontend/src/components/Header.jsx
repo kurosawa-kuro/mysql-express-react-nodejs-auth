@@ -2,6 +2,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { useStore } from '../state/store.js';
+import { logoutUser } from '../services/api.js';
 
 const Header = () => {
   const { user, setUser } = useStore();
@@ -9,8 +10,8 @@ const Header = () => {
 
   const logoutMutation = useMutation(
     async () => {
-      const response = await axios.post('/api/users/logout');
-      return response.data;
+      const response = await logoutUser(); // <-- Change this line
+      return response;
     },
     {
       onSuccess: () => {

@@ -1,14 +1,30 @@
 // frontend\src\hooks\auth\useRegisterUserHook.js
 
+// Importing React Hooks
 import { useState } from 'react';
+
+// Importing react-query Hooks
 import { useMutation } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
+
+// Importing Navigation Hooks
 import { useNavigate } from 'react-router-dom';
+
+// Importing notification library
+import { toast } from 'react-toastify';
+
+// Importing Custom Hooks
 import { useUserStore, useFlashMessageStore } from '../../state/store.js';
+
+// Importing API service
 import { registerUserApi } from '../../services/api.js';
 
+/**
+ * Custom hook for handling user registration
+ */
 export const useRegisterUserHook = () => {
+    // Navigation
     const navigate = useNavigate();
+
     // Local State
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -29,6 +45,7 @@ export const useRegisterUserHook = () => {
             return user;
         },
         {
+            // On success
             onSuccess: (user) => {
                 setUser(user);
                 setFlashMessage("User registration successful!");
@@ -40,11 +57,13 @@ export const useRegisterUserHook = () => {
         }
     );
 
+    // Form submit handler
     const submitHandler = (e) => {
         e.preventDefault();
         registerUserMutation.mutate();
     };
 
+    // Return the values from the hook
     return {
         mutation: registerUserMutation,
         submitHandler,

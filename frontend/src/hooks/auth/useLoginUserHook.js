@@ -1,27 +1,39 @@
 // frontend\src\hooks\auth\useLoginUserHook.js
 
+// Importing React Hooks
 import { useState } from 'react';
+
+// Importing react-query Hooks
 import { useMutation } from '@tanstack/react-query';
+
+// Importing Navigation Hooks
 import { useNavigate } from 'react-router-dom';
+
+// Importing notification library
 import { toast } from 'react-toastify';
 
+// Importing Custom Hooks
 import { useUserStore, useFlashMessageStore } from '../../state/store.js';
+
+// Importing API service
 import { loginUserApi } from '../../services/api.js';
 
 /**
  * Custom hook for handling user login
  */
 export const useLoginUserHook = () => {
-    // State
+    // Navigation
+    const navigate = useNavigate();
+
+    // Local State
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // Hooks
-    const navigate = useNavigate();
+    // Global State
     const { setUser } = useUserStore();
     const { setFlashMessage } = useFlashMessageStore();
 
-    // loginUserApi mutation
+    // API mutation
     const loginUserApiMutation = useMutation(
         async () => {
             const user = await loginUserApi({ email, password });
@@ -41,7 +53,7 @@ export const useLoginUserHook = () => {
         }
     );
 
-    // Submit handler for the form
+    // Form submit handler
     const submitHandler = (e) => {
         e.preventDefault();
         loginUserApiMutation.mutate();

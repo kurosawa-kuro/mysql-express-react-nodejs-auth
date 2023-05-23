@@ -6,7 +6,6 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
-import { } from '../state/store.js'
 import { useStore } from '../state/store.js';
 
 const RegisterScreen = () => {

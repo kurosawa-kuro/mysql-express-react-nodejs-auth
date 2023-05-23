@@ -1,37 +1,39 @@
-import { useState, useEffect } from 'react';
+// frontend\src\screens\LoginScreen.jsx
+
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLoginMutation } from '../slices/usersApiSlice';
-import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
+import { useStore } from '../state/store.js';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const dispatch = useDispatch();
+  const { setUser } = useStore();
   const navigate = useNavigate();
 
-  const [login, { isLoading }] = useLoginMutation();
-
-  const { userInfo } = useSelector((state) => state.auth);
-
-  useEffect(() => {
-    if (userInfo) {
-      navigate('/');
+  const loginUserMutation = useMutation(
+    async ({ email, password }) => {
+      const response = await axios.post('/api/users/auth', { email, password });
+      return response.data;
+    },
+    {
+      onSuccess: (user) => {
+        setUser(user);
+        navigate('/');
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data?.message || error.message);
+      },
     }
-  }, [navigate, userInfo]);
+  );
 
-  const submitHandler = async (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
-    try {
-      const res = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...res }));
-      navigate('/');
-    } catch (err) {
-      toast.error(err?.data?.message || err.error);
-    }
+    loginUserMutation.mutate({ email, password });
   };
 
   return (
@@ -60,7 +62,7 @@ const LoginScreen = () => {
         </div>
 
         <button
-          disabled={isLoading}
+          disabled={loginUserMutation.isLoading}
           type='submit'
           className='register-button mt-3'
         >
@@ -68,7 +70,7 @@ const LoginScreen = () => {
         </button>
       </form>
 
-      {isLoading && <Loader />}
+      {loginUserMutation.isLoading && <Loader />}
 
       <div className='py-3'>
         New Customer? <Link to='/register'>Register</Link>

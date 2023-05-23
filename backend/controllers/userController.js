@@ -4,10 +4,9 @@ import {
   createUser,
   getUserByEmail,
   loginUser,
-  updateUserPassword,
+  updateUserProfileData,
   getUserById
 } from '../models/userModel.js';
-import { db } from "../database/prisma/prismaClient.js";
 
 // @desc    Auth user & get token
 // @route   POST /api/users/auth
@@ -93,29 +92,13 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/profile
 // @access  Private
 export const updateUserProfile = asyncHandler(async (req, res) => {
-  // updateUserProfile
-  console.log("--- updateUserProfile ---");
-  console.log("req.body", req.body);
-  console.log("req.user", req.user);
-  const user = await getUserById(req.user.id);
-  console.log("user", user);
+  const updatedUser = await updateUserProfileData({ userId: req.user.id, name: req.body.name, email: req.body.email });
 
-  if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-
-    // user update
-    console.log("user update");
-    const updatedUser = await db.user.update({
-      where: { id: user.id },
-      data: { name: user.name, email: user.email }
-    });
-    console.log("updatedUser", updatedUser);
-
+  if (updatedUser) {
     res.json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
+      id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
     });
   } else {
     res.status(404);

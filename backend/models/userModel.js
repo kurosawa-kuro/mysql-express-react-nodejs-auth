@@ -36,8 +36,25 @@ export const getUserById = async (id) => {
     return await db.user.findUnique({ where: { id } });
 }
 
+export const updateUserProfileData = async ({ userId, name, email }) => {
+    const user = await db.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    user.name = name || user.name;
+    user.email = email || user.email;
+
+    const updatedUser = await db.user.update({
+        where: { id: user.id },
+        data: { name: user.name, email: user.email }
+    });
+
+    return updatedUser;
+}
+
 export const updateUserPassword = async (id, newPassword) => {
-    console.log("updateUserPassword", id, newPassword);
     const hashedPassword = await hashPassword(newPassword);
     const user = await db.user.update({ where: { id }, data: { password: hashedPassword } });
     return user ? omitPassword(user) : null;

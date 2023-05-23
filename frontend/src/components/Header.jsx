@@ -1,6 +1,5 @@
 import { useNavigate, Link } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
 import { useStore } from '../state/store.js';
 import { logoutUser } from '../services/api.js';
 

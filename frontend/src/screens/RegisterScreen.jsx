@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Loader from '../components/Loader';
+import { Loader } from '../components/Loader';
 import { useStore } from '../state/store.js';
 import { registerUser } from '../services/api.js';
 

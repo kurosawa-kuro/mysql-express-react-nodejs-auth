@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import Loader from '../components/Loader';
+import { Loader } from '../components/Loader';
 import { useStore } from '../state/store.js';
 import { fetchUserProfile, updateUserProfile } from '../services/api.js';
 
